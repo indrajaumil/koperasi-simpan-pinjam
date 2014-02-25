@@ -1,0 +1,50 @@
+<?php
+
+class PinjamanController extends Controller
+{
+	public $layout='//layouts/column2';
+	public function actionIndex()
+	{
+		$conditions='TrMPinjaman.No_BA="'.Yii::app()->user->getState('noBA').'"';
+		$model=MPinjaman::model()->findAll(
+											array(
+												'select'=>'t.No_Pinjaman',
+												'group'=>'t.No_Pinjaman',
+												'condition'=>'No_BA="'.Yii::app()->user->getState('noBA').'"',
+    											'distinct'=>true,
+											)
+										);
+		if(isset($_POST['No_Pinjaman']))
+		{
+			$conditions .= ' AND TrMPinjaman.No_Pinjaman="'.$_POST['No_Pinjaman'].'"';
+		}
+		if($_POST['tanggal_awal']!="")
+		{
+			$conditions .= ' AND Tgl_Transaksi>="'.$_POST['tanggal_awal'].'"';
+		}
+		if($_POST['tanggal_akhir']!="")
+		{
+			$conditions .= ' AND Tgl_Transaksi<="'.$_POST['tanggal_akhir'].'"';
+		}
+		if($_POST)
+		{
+			$dataProvider=new CActiveDataProvider('TrPinjaman', array(
+													'criteria'=>array(
+														'with' => array('TrMPinjaman'),
+														'condition'=>$conditions,
+														/*'order'=>'rMSimpananHarian.Tgl_Transaksi DESC',*/
+													),
+													'pagination'=>array(
+														'pageSize'=>20,
+													),
+												));
+			Yii::app()->user->setState('printingDataProvide', $dataProvider);
+		}
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+			'model'=>$model,
+		));
+		
+	}	
+}
+?>

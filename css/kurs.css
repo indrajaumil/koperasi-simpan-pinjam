@@ -1,0 +1,5 @@
+table{font-family: tahoma; font-size:10px; margin-top: -6px;}
+.box{border:#e0dfdf 1px solid;}
+.box-header{background-image:url(../images/background-box-header.jpg);border-bottom:#e0dfdf 1px solid;height:33px; }
+.box-header td{border-right:1px solid #999; padding:2px 4px;}
+.kurs{padding: 2px 3px 2px 4px; line-height:150%;}
